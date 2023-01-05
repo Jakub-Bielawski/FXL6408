@@ -1,0 +1,31 @@
+{
+    "name": "FXL6408",
+    "version": "0.2.0",
+    "description": "Arduino library for GPIO expander FXL6408",
+    "keywords": "arduino, library, FXL6408, gpio, expander",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/Jakub-Bielawski/FXL6408"
+    },
+    "authors":
+    [
+        {
+            "name": "Jakub Bielawski",
+            "url": "https://github.com/Jakub-Bielawski",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/Jakub-Bielawski/FXL6408",
+    "frameworks": ["arduino"],
+    "platforms": "*",
+    "export":
+    {
+        "exclude":
+        [
+            "examples",
+            ".gitignore"
+        ]
+    }
+}
