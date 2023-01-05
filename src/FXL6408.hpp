@@ -49,57 +49,27 @@ typedef enum{
 
 struct FXL6408_GPIO{
 public:
-    bool mode;
-    bool INTEnable;
-    bool state;
+    bool mode = FXL6408_GPIO_INPUT;
+    bool INTEnable = FXL6408_GPIO_LOW;
+    bool state = FXL6408_GPIO_LOW;
     int address;
 };
 struct FXL6408Settings{
 public:
-    // gpio default mode
-    bool GPIOMode[8] = {
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT,
-        FXL6408_GPIO_INPUT
-    };
 
-    // default interruts
-    bool GPIOInt[8] = {
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW
-    };
-
-    // gpio default state
-    bool GPIOState[8] = {
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW,
-        FXL6408_GPIO_LOW
-    };
+    bool GPIOMode[8];
+    bool GPIOInt[8];
+    bool GPIOState[8];
 
     int GPIOAddress[8] = {
         FXL6408_GPIO_0,
         FXL6408_GPIO_1,
         FXL6408_GPIO_2,
+        FXL6408_GPIO_3,
         FXL6408_GPIO_4,
         FXL6408_GPIO_5,
         FXL6408_GPIO_6,
-        FXL6408_GPIO_7
+        FXL6408_GPIO_7,
     };
 };
 
@@ -110,17 +80,28 @@ public:
     ~FXL6408();
     // basic
     void init();
-    void pinWrite(int pin, int val);
+    fxl6408_status_t pinWrite(uint8_t pin, bool val);
     bool pinRead(int pin);
 
     // additional
     bool checkIntOnPin(int pin);
 
+    FXL6408_GPIO gpio0;
+    FXL6408_GPIO gpio1;
+    FXL6408_GPIO gpio2;
+    FXL6408_GPIO gpio3;
+    FXL6408_GPIO gpio4;
+    FXL6408_GPIO gpio5;
+    FXL6408_GPIO gpio6;
+    FXL6408_GPIO gpio7;
+
 private:
-    void confPinModeReg(uint8_t* data, int pin, int mode);
-    void confInterruptMaskReg(uint8_t* data, int pin, int mode);
-    void confInputDefaultState(uint8_t* data, int pin, int mode);
-    void confRegister(uint8_t* data, int pin, int mode);
+
+    void copySettings();
+    void confPinModeReg(uint8_t* data, uint8_t pin, int mode);
+    void confInterruptMaskReg(uint8_t* data, uint8_t pin, int mode);
+    void confInputDefaultState(uint8_t* data, uint8_t pin, int mode);
+    void confRegister(uint8_t* data, uint8_t pin, int mode);
 
     fxl6408_status_t readRegister(uint8_t* outputPointer, uint8_t offset);
     fxl6408_status_t writeRegister(uint8_t offset, uint8_t dataToWrite);
