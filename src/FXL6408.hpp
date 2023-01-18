@@ -30,6 +30,11 @@ Based on https://www.mouser.pl/datasheet/2/308/1/FXL6408_D-2314184.pdf
 #define FXL6408_GPIO_LOW            0
 #define FXL6408_GPIO_HIGH           1
 
+/***************** INTERRUPTS  ****************/
+
+#define FXL6408_GPIO_INTERRUPT_ACTIVE 0
+#define FXL6408_GPIO_INTERRUPT_NOT_ACTIVE 1
+
 /*************** GPIO ADDRESSES **************/
 
 #define FXL6408_GPIO_0              0x01
@@ -50,7 +55,7 @@ typedef enum{
 struct FXL6408_GPIO{
 public:
     bool mode = FXL6408_GPIO_INPUT;
-    bool INTEnable = FXL6408_GPIO_LOW;
+    bool INTEnable = FXL6408_GPIO_INTERRUPT_NOT_ACTIVE;
     bool state = FXL6408_GPIO_LOW;
     int address;
 };
@@ -84,7 +89,8 @@ public:
     bool pinRead(int pin);
 
     // additional
-    bool checkIntOnPin(int pin);
+    void getInterruptStatus(uint8_t *output);
+    bool checkIntOnPin(uint8_t *regVal, int pin);
 
     FXL6408_GPIO gpio0;
     FXL6408_GPIO gpio1;
@@ -112,3 +118,4 @@ private:
 };
 
 #endif // FXL6408__H_
+

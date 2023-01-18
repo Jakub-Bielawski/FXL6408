@@ -17,9 +17,9 @@ void FXL6408 :: init(){
     for(int i = 0; i < 8; i++){
         confPinModeReg(&IODirection,settings.GPIOAddress[i],settings.GPIOMode[i]);
         confInterruptMaskReg(&InterruptMask,settings.GPIOAddress[i], settings.GPIOInt[i]);
-        confInputDefaultState(&InputDefaultState, settings.GPIOAddress[i],settings.GPIOMode[i]);
+        confInputDefaultState(&InputDefaultState, settings.GPIOAddress[i],settings.GPIOState[i]);
     }
-
+    writeRegister(FXL6408_IO_DIRECTION, IODirection);
     writeRegister(FXL6408_INTERRUPT_MASK, InterruptMask);
     writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState);
     writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00);    // neccesary to controll output IO
@@ -59,15 +59,12 @@ bool FXL6408 :: pinRead(int pin){
     return (bool)(regVal & pin);
 }
 
-bool FXL6408 :: checkIntOnPin(int pin){
-   uint8_t regVal;
-    FXL6408 :: readRegister(&regVal, FXL6408_OUTPUT_STATE);
+void FXL6408 :: getInterruptStatus( uint8_t *output){
+    FXL6408 :: readRegister(output, FXL6408_INTERRUPT_STATUS);
+}
 
-    if(regVal & pin){
-        return true;
-    }else{
-        return false;
-    }
+bool FXL6408 :: checkIntOnPin(uint8_t *regVal, int pin){
+    return (bool)*regVal & pin;
 }
 
 void FXL6408 :: copySettings(){

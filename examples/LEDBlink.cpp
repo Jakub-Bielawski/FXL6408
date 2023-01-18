@@ -8,8 +8,8 @@ void setup() {
   Wire.begin();
   Serial.begin(115200);
   while(!Serial){  }
-  EGpio.init();
   EGpio.gpio4.mode = FXL6408_GPIO_OUTPUT;
+  EGpio.init();
 }
 
 
