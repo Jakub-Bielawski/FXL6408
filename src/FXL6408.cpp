@@ -23,8 +23,13 @@ void FXL6408 :: init(){
     writeRegister(FXL6408_INTERRUPT_MASK, InterruptMask);
     writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState);
     writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00);    // neccesary to controll output IO
- 
-
+    
+    uint8_t regVal = 0x00;
+    FXL6408 :: readRegister(&regVal, FXL6408_INTERRUPT_MASK);
+    Serial.println(regVal,2);
+    regVal=0x00;
+    FXL6408 :: readRegister(&regVal, FXL6408_INPUT_DEFAULT_STATE);
+    Serial.println(regVal,2);
 }
 
 fxl6408_status_t FXL6408 :: pinWrite(uint8_t pin, bool val){
@@ -61,10 +66,20 @@ bool FXL6408 :: pinRead(int pin){
 
 void FXL6408 :: getInterruptStatus( uint8_t *output){
     FXL6408 :: readRegister(output, FXL6408_INTERRUPT_STATUS);
+    uint8_t regVal=0x00;
+    FXL6408 :: writeRegister(FXL6408_INTERRUPT_STATUS, regVal);
 }
 
 bool FXL6408 :: checkIntOnPin(uint8_t *regVal, int pin){
-    return (bool)*regVal & pin;
+    return (bool)(*regVal & pin);;
+}
+
+void FXL6408 :: reset(){
+    uint8_t regVal = 0x00;
+
+    FXL6408 :: readRegister(&regVal, FXL6408_DEVICE_ID_AND_CTRL);
+    regVal &= ~0x01;
+    FXL6408 :: writeRegister(FXL6408_DEVICE_ID_AND_CTRL, regVal);
 }
 
 void FXL6408 :: copySettings(){

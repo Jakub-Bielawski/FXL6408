@@ -91,6 +91,7 @@ public:
     // additional
     void getInterruptStatus(uint8_t *output);
     bool checkIntOnPin(uint8_t *regVal, int pin);
+    void reset();
 
     FXL6408_GPIO gpio0;
     FXL6408_GPIO gpio1;
