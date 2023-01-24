@@ -24,12 +24,8 @@ void FXL6408 :: init(){
     writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState);
     writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00);    // neccesary to controll output IO
     
-    uint8_t regVal = 0x00;
-    FXL6408 :: readRegister(&regVal, FXL6408_INTERRUPT_MASK);
-    Serial.println(regVal,2);
-    regVal=0x00;
-    FXL6408 :: readRegister(&regVal, FXL6408_INPUT_DEFAULT_STATE);
-    Serial.println(regVal,2);
+    showRegisters();
+
 }
 
 fxl6408_status_t FXL6408 :: pinWrite(uint8_t pin, bool val){
@@ -78,10 +74,34 @@ void FXL6408 :: reset(){
     uint8_t regVal = 0x00;
 
     FXL6408 :: readRegister(&regVal, FXL6408_DEVICE_ID_AND_CTRL);
+    delay(10);
     regVal &= ~0x01;
     FXL6408 :: writeRegister(FXL6408_DEVICE_ID_AND_CTRL, regVal);
+    delay(10);
 }
 
+void FXL6408 :: showRegisters(){
+
+    printReg(FXL6408_DEVICE_ID_AND_CTRL);
+    printReg(FXL6408_IO_DIRECTION);
+    printReg(FXL6408_OUTPUT_STATE);
+    printReg(FXL6408_OUTOUT_HIGH_Z);
+    printReg(FXL6408_INPUT_DEFAULT_STATE);
+    printReg(FXL6408_PULL_ENABLE);
+    printReg(FXL6408_PULL_DOWN_PULL_UP);
+    printReg(FXL6408_INPUT_STATUS);
+    printReg(FXL6408_INTERRUPT_MASK);
+    printReg(FXL6408_INTERRUPT_STATUS);
+}
+
+void FXL6408 :: printReg(int registerAddres){
+    uint8_t regVal = 0x00;
+    FXL6408 :: readRegister(&regVal, registerAddres);
+
+    Serial.printf("%X \t",registerAddres);
+    Serial.println(regVal,2);
+
+}
 void FXL6408 :: copySettings(){
     settings.GPIOMode[0] = gpio0.mode;
     settings.GPIOMode[1] = gpio1.mode;

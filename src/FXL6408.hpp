@@ -54,7 +54,7 @@ typedef enum{
 
 struct FXL6408_GPIO{
 public:
-    bool mode = FXL6408_GPIO_INPUT;
+    bool mode = FXL6408_GPIO_OUTPUT;
     bool INTEnable = FXL6408_GPIO_INTERRUPT_NOT_ACTIVE;
     bool state = FXL6408_GPIO_LOW;
     int address;
@@ -92,6 +92,7 @@ public:
     void getInterruptStatus(uint8_t *output);
     bool checkIntOnPin(uint8_t *regVal, int pin);
     void reset();
+    void showRegisters();
 
     FXL6408_GPIO gpio0;
     FXL6408_GPIO gpio1;
@@ -109,6 +110,7 @@ private:
     void confInterruptMaskReg(uint8_t* data, uint8_t pin, int mode);
     void confInputDefaultState(uint8_t* data, uint8_t pin, int mode);
     void confRegister(uint8_t* data, uint8_t pin, int mode);
+    void printReg(int registerAddres);
 
     fxl6408_status_t readRegister(uint8_t* outputPointer, uint8_t offset);
     fxl6408_status_t writeRegister(uint8_t offset, uint8_t dataToWrite);
