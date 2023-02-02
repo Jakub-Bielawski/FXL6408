@@ -84,7 +84,8 @@ public:
     FXL6408();
     ~FXL6408();
     // basic
-    void init();
+
+    fxl6408_status_t init();
     fxl6408_status_t pinWrite(uint8_t pin, bool val);
     bool pinRead(int pin);
 

@@ -7,9 +7,10 @@ FXL6408::FXL6408(){
 FXL6408::~FXL6408(){
 }
 
-void FXL6408 :: init(){
+///@return 0 - succces, 1-error
+fxl6408_status_t FXL6408 :: init(){
     copySettings();
-
+    fxl6408_status_t error = FXL6408_OK;
     uint8_t IODirection = 0x00;
     uint8_t InterruptMask = 0x00;
     uint8_t InputDefaultState = 0x00;
@@ -19,13 +20,12 @@ void FXL6408 :: init(){
         confInterruptMaskReg(&InterruptMask,settings.GPIOAddress[i], settings.GPIOInt[i]);
         confInputDefaultState(&InputDefaultState, settings.GPIOAddress[i],settings.GPIOState[i]);
     }
-    writeRegister(FXL6408_IO_DIRECTION, IODirection);
-    writeRegister(FXL6408_INTERRUPT_MASK, InterruptMask);
-    writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState);
-    writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00);    // neccesary to controll output IO
-    
-    showRegisters();
+    if(writeRegister(FXL6408_IO_DIRECTION, IODirection)){error = FXL6408_NOK;}
+    if(writeRegister(FXL6408_INTERRUPT_MASK, InterruptMask)){error = FXL6408_NOK;}
+    if(writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState)){error = FXL6408_NOK;}
+    if(writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00)){error = FXL6408_NOK;}    // neccesary to controll output IO
 
+    return error;
 }
 
 fxl6408_status_t FXL6408 :: pinWrite(uint8_t pin, bool val){
