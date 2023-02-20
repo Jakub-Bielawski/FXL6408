@@ -1,6 +1,6 @@
 {
     "name": "FXL6408",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Arduino library for GPIO expander FXL6408",
     "keywords": "arduino, library, FXL6408, gpio, expander",
     "repository":
@@ -24,7 +24,6 @@
     {
         "exclude":
         [
-            "examples",
             ".gitignore"
         ]
     }

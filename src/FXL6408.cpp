@@ -24,6 +24,8 @@ fxl6408_status_t FXL6408 :: init(){
     if(writeRegister(FXL6408_INTERRUPT_MASK, InterruptMask)){error = FXL6408_NOK;}
     if(writeRegister(FXL6408_INPUT_DEFAULT_STATE, InputDefaultState)){error = FXL6408_NOK;}
     if(writeRegister(FXL6408_OUTOUT_HIGH_Z, 0x00)){error = FXL6408_NOK;}    // neccesary to controll output IO
+    uint8_t IdAndControll = 0x00;
+    FXL6408 :: readRegister(&IdAndControll, FXL6408_DEVICE_ID_AND_CTRL);
 
     return error;
 }
